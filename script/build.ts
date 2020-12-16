@@ -20,7 +20,7 @@ function installPrereqs() {
 }
 
 function buildTypeScript() {
-    const result = shell.exec(`tsc --project src/cli`);
+    const result = shell.exec(`npm run tsc --project src/cli`);
     if (result.code !== 0) {
         process.exit(result.code);
     }
