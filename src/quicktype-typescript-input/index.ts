@@ -8,7 +8,9 @@ import { encodedDefaultTypeScriptLibrary } from "./EncodedDefaultTypeScriptLibra
 const settings: PartialArgs = {
     required: true,
     titles: true,
-    topRef: true
+    topRef: true,
+    propOrder: true,
+    defaultProps: true,
 };
 
 const compilerOptions: ts.CompilerOptions = {
@@ -122,10 +124,18 @@ export function schemaForTypeScriptSources(sources: string[] | { [fileName: stri
             if (
                 definition === null ||
                 Array.isArray(definition) ||
-                typeof definition !== "object" ||
-                typeof definition.description !== "string"
+                typeof definition !== "object" 
             ) {
                 continue;
+            }
+
+            // Preserve order by default
+            if (Array.isArray(definition.propertyOrder)) {
+                definition.quicktypePropertyOrder = definition.propertyOrder;
+            }
+
+            if (typeof definition.description !== "string") {
+                continue
             }
 
             const description = definition.description as string;
